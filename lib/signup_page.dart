@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:maps_project/login_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -117,8 +118,17 @@ class _SignUpPageState extends State<SignUpPage> {
                 
                 // Sign Up Button
                 ElevatedButton(
-                  onPressed: () {
-                    // Just navigate back to login after fake registration
+                  onPressed: () async {
+                    if (_nameController.text.isEmpty || _emailController.text.isEmpty || _passwordController.text.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Please fill all fields')));
+                      return;
+                    }
+                    
+                    final prefs = await SharedPreferences.getInstance();
+                    await prefs.setString('name', _nameController.text);
+                    await prefs.setString('email', _emailController.text);
+                    await prefs.setString('password', _passwordController.text);
+
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Account created successfully')),
                     );

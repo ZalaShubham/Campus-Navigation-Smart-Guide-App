@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:maps_project/map_page.dart';
 import 'package:maps_project/signup_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -99,11 +100,28 @@ class _LoginPageState extends State<LoginPage> {
                 
                 // Login Button
                 ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => const MapPage()),
-                    );
+                  onPressed: () async {
+                    final prefs = await SharedPreferences.getInstance();
+                    final savedEmail = prefs.getString('email');
+                    final savedPassword = prefs.getString('password');
+
+                    if (savedEmail == null || savedPassword == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('No account found. Please Sign Up.')),
+                      );
+                      return;
+                    }
+
+                    if (_emailController.text == savedEmail && _passwordController.text == savedPassword) {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => const MapPage()),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Invalid Email or Password')),
+                      );
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.greenAccent,
