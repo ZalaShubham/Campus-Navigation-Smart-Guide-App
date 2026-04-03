@@ -7,11 +7,13 @@ class NavigationPage extends StatefulWidget {
   final LatLng startLocation;
   final LatLng endLocation;
   final String method;
+  final bool isSatelliteMode;
 
   const NavigationPage({
     required this.startLocation,
     required this.endLocation,
     required this.method,
+    required this.isSatelliteMode,
     super.key,
   });
 
@@ -28,10 +30,12 @@ class _NavigationPageState extends State<NavigationPage> {
   bool _isLoading = true;
   late Marker _userLocationMarker;
   late Marker _destinationMarker;
+  late bool _isSatelliteMode;
 
   @override
   void initState() {
     super.initState();
+    _isSatelliteMode = widget.isSatelliteMode;
     _userLocationMarker = Marker(
       point: widget.startLocation,
       child: const Icon(
@@ -129,8 +133,9 @@ class _NavigationPageState extends State<NavigationPage> {
                   ),
                   children: [
                     TileLayer(
-                      urlTemplate:
-                          'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                      urlTemplate: _isSatelliteMode
+                          ? 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
+                          : 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                     ),
                     PolylineLayer(
                       polylines: [
@@ -148,6 +153,23 @@ class _NavigationPageState extends State<NavigationPage> {
                       ],
                     ),
                   ],
+                ),
+                Positioned(
+                  bottom: 120,
+                  right: 15,
+                  child: FloatingActionButton(
+                    onPressed: () {
+                      setState(() {
+                        _isSatelliteMode = !_isSatelliteMode;
+                      });
+                    },
+                    mini: true,
+                    backgroundColor: Colors.white,
+                    child: Icon(
+                      _isSatelliteMode ? Icons.map : Icons.satellite_alt,
+                      color: Colors.greenAccent,
+                    ),
+                  ),
                 ),
                 Positioned(
                   bottom: 15,

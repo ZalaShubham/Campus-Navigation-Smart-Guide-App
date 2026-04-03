@@ -224,6 +224,7 @@ class _MapPageState extends State<MapPage> {
                       startLocation: _currentCenter,
                       endLocation: _selectedPosition!,
                       method: _selectedRouteMethod.toLowerCase(),
+                      isSatelliteMode: _isSatelliteMode,
                     ),
                   ),
                 );
