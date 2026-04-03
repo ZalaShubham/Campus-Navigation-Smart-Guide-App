@@ -38,6 +38,7 @@ class _MapPageState extends State<MapPage> {
   // String _distance = '';
   // String _duration = '';
   String _selectedRouteMethod = 'Car';
+  bool _isSatelliteMode = false;
 
   @override
   void initState() {
@@ -470,6 +471,23 @@ class _MapPageState extends State<MapPage> {
                   ),
                 ),
                 Positioned(
+                  bottom: 150,
+                  right: 0,
+                  child: FloatingActionButton(
+                    onPressed: () {
+                      setState(() {
+                        _isSatelliteMode = !_isSatelliteMode;
+                      });
+                    },
+                    mini: true,
+                    backgroundColor: Colors.white,
+                    child: Icon(
+                      _isSatelliteMode ? Icons.map : Icons.satellite_alt,
+                      color: Colors.greenAccent,
+                    ),
+                  ),
+                ),
+                Positioned(
                   bottom: 100,
                   right: 0,
                   child: FloatingActionButton(
@@ -486,6 +504,8 @@ class _MapPageState extends State<MapPage> {
   }
 
   TileLayer get mapTile => TileLayer(
-        urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+        urlTemplate: _isSatelliteMode
+            ? 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
+            : 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
       );
 }
