@@ -5,7 +5,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:maps_project/navigation_page.dart';
 import 'package:maps_project/search_service.dart';
-
+import 'package:maps_project/profile_page.dart';
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
 
@@ -306,8 +306,21 @@ class _MapPageState extends State<MapPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Center(child: Text('Campus Navigator')),
+        title: const Text('Campus Navigator'),
+        centerTitle: true,
         backgroundColor: Colors.greenAccent,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.person_outline, size: 28),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ProfilePage()),
+              );
+            },
+          ),
+          const SizedBox(width: 8),
+        ],
       ),
       body: Stack(
         children: [

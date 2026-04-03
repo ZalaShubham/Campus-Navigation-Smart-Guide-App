@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:maps_project/map_page.dart';
+import 'package:maps_project/login_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.greenAccent),
         useMaterial3: true,
       ),
-      home: MapPage(),
+      home: const LoginPage(),
     );
   }
 }

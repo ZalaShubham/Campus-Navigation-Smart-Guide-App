@@ -19,9 +19,9 @@ class RouteService {
         'coordinates': (data['features'][0]['geometry']['coordinates'] as List)
             .map((c) => LatLng(c[1], c[0]))
             .toList(),
-        'distance': data['features'][0]['properties']['segments'][0]
+        'distance': data['features'][0]['properties']['summary']
             ['distance'],
-        'duration': data['features'][0]['properties']['segments'][0]
+        'duration': data['features'][0]['properties']['summary']
             ['duration'],
       };
     } else {
